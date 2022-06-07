@@ -1,0 +1,30 @@
+<loading-state [loading]="isLoading">
+    <p-table [columns]="columns" [value]="records" [paginator]="true" [rows]="pageable.size"
+        [totalRecords]="totalRecords" [lazy]="true" (onLazyLoad)="loadDataLazy($event)" responsiveLayout="scroll">
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                    {{ col.header }}
+                    <p-sortIcon [field]="col.field"></p-sortIcon>
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-data let-columns="columns">
+            <tr [pSelectableRow]="data">
+                <td *ngFor="let col of columns" [ngSwitch]="col.field">
+                    <span *ngSwitchCase="'belt'" [appBelt]="data['belt']"></span>
+                    <span *ngSwitchCase="'situation'" [appSituationAthleteGraduation]="data['situation']"></span>
+                    <span *ngSwitchDefault [ngClass]="{italic: ((data | getProperty:col) == 'Não informado')}">
+                        {{ data | getProperty:col }}
+                    </span>
+                </td>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+                {{ totalRecords }} exames de graduação encontrados
+            </div>
+        </ng-template>
+    </p-table>
+</loading-state>

@@ -1,0 +1,27 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body {
+    height: 100%;
+}
+
+body {
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    background-color: #eff3f8;
+}
+
+.p-menu {
+    width: 100% !important;
+}
+
+.italic {
+    font-style: italic;
+}
+
+.p-timeline-event-opposite {
+    padding: 0 !important;
+}
+
+.inputNumber {
+    max-width: 80px!important;
+    margin-left: 12px!important;
+}

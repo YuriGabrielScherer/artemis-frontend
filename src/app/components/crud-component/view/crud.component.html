@@ -1,0 +1,18 @@
+<p-panel [showHeader]="false">
+    <div class="grid">
+        <div class="col">
+            <button pButton pRipple label="Cadastrar" class="p-button-outlined mr-2" (click)="openNew()"></button>
+            <button *ngIf="showDetailButton" pButton pRipple label="Detalhes"
+                class="p-button-help p-button-outlined mr-2" (click)="detail()"
+                [disabled]="!selectedData || selectedData.length != 1">
+            </button>
+            <button pButton pRipple label="Editar" class="p-button-secondary p-button-outlined mr-2" (click)="edit()"
+                [disabled]="!selectedData || selectedData.length != 1">
+            </button>
+
+        </div>
+    </div>
+
+    <app-general-table [columns]="columns" [dataKey]="dataKey" [service]="service" [(selectedData)]="selectedData">
+    </app-general-table>
+</p-panel>

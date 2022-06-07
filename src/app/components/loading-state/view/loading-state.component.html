@@ -1,0 +1,21 @@
+<div [id]="id" class="loading-state-container" [ngClass]="{'loading': loading, 'blocking': blocking, 'fullscreen': blockWindow}">
+
+    <div [id]="id + '-loader'" class="loader">
+        <div [id]="id + '-spinner'" class="spinner">
+            <div class="bounce bounce-1"></div>
+            <div class="bounce bounce-2"></div>
+            <div class="bounce bounce-3"></div>
+        </div>
+
+        <div [id]="id+'-overlay'" class="overlay"></div>
+    </div>
+
+    <div [id]="id+'-contents'" class="contents">
+        <ng-container *ngTemplateOutlet="contents || originalContent"></ng-container>
+        <ng-template #originalContent>
+            <ng-content
+            ></ng-content>
+        </ng-template>
+    </div>
+
+</div>

@@ -1,0 +1,49 @@
+<p-panel header="Dados do Atleta" *loadingState="isLoading">
+    <ng-container *ngIf="!athleteToEdit; else dataRow">
+        <app-general-table noRecordsMessage="Nenhuma pessoa encontrada" [columns]="personColumns"
+            [service]="personService" [apiFilter]="{onlyPerson: true}" [singleSelection]="true"
+            [(selectedData)]="selectedPerson" [rowsPerPage]="[5, 10]" [rows]="5">
+        </app-general-table>
+    </ng-container>
+
+    <ng-template #dataRow>
+        <div class="grid">
+            <div class="col-6 titleField">Nome</div>
+            <div class="col-6 titleField">Código</div>
+
+            <div class="col-6">{{ athleteToEdit!.person.name }}</div>
+            <div class="col-6">{{ athleteToEdit!.person.code }}</div>
+
+            <div class="col-6 titleField">Graduação</div>
+            <div class="col-6 titleField">Data de Nascimento</div>
+
+            <div class="col-6"><span [appBelt]="athleteToEdit!.belt"></span></div>
+            <div class="col-6">{{ athleteToEdit!.person.birth | date:'dd/MM/yyyy' }}</div>
+        </div>
+    </ng-template>
+</p-panel>
+
+<br>
+
+<p-panel header="{{ athleteToEdit ? 'Alterar' : 'Novo' }} Atleta">
+    <form [formGroup]="form">
+        <div class="formgrid grid p-fluid">
+            <div class="field col-6">
+                <label for="since">Data de Início</label>
+                <p-calendar formControlName="since" inputId="basic" id="since" dateFormat="dd/mm/yy" [showIcon]="true"
+                    [showButtonBar]="true">
+                </p-calendar>
+            </div>
+        </div>
+    </form>
+</p-panel>
+
+<br>
+
+<p-panel [showHeader]="false">
+    <button pButton pRipple label="Salvar" class="p-button-success p-button-outlined mr-2" (click)="onSave()"
+        [disabled]="!form.valid">
+    </button>
+    <button pButton pRipple label="Cancelar" class="p-button-secondary p-button-outlined " (click)="onCancel()">
+    </button>
+</p-panel>

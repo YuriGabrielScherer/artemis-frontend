@@ -1,0 +1,69 @@
+<p-dialog header="Vincule professores" [(visible)]="showDialog" [draggable]="false" [resizable]="false" [modal]="true">
+
+    <ng-template pTemplate="content">
+
+        <ng-container *ngIf="hasError && isLoading == false; else tableDiv">
+            <app-empty-state title="Ocorreu um erro ao buscar os professores disponíveis para serem vinculados."
+                icon="pi pi-times-circle" firstActionLabel="Tentar novamente" (firstAction)="onRetry()">
+            </app-empty-state>
+        </ng-container>
+
+        <ng-template #tableDiv>
+            <ng-container *ngIf="firstDataLoaded == false || records.length > 0; else emptyAvailableProfessors">
+                <p-table *loadingState="isLoading" [columns]="columns" [value]="records" [paginator]="true"
+                    [rows]="pageable.size" selectionMode="multiple" [(selection)]="professorsSelected"
+                    dataKey="person.code" [totalRecords]="totalRecords" sortField="code" [lazy]="true"
+                    (onLazyLoad)="loadDataLazy($event)" responsiveLayout="scroll">
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th style="width: 3rem">
+                                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                            </th>
+                            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                                {{ col.header }}
+                                <p-sortIcon [field]="col.field"></p-sortIcon>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-data let-columns="columns">
+                        <tr [pSelectableRow]="data">
+                            <td>
+                                <p-tableCheckbox [value]="data" (click)="toggleCheckBox($event)">
+                                </p-tableCheckbox>
+                            </td>
+                            <td *ngFor="let col of columns">
+                                <span [ngClass]="{italic: ((data | getProperty:col) == 'Não informado')}">
+                                    {{ data | getProperty:col }}
+                                </span>
+                            </td>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="summary" *ngIf="hasError == false && totalRecords > 0">
+                        <div class="flex align-items-center justify-content-between">
+                            {{ totalRecords }} professores encontrados
+                        </div>
+                    </ng-template>
+                </p-table>
+
+            </ng-container>
+
+            <ng-template #emptyAvailableProfessors>
+                <app-empty-state title="Todos os professores disponíveis já foram vinculados ao exame de graduação."
+                    icon="pi pi-info-circle">
+                </app-empty-state>
+            </ng-template>
+        </ng-template>
+
+
+
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Vincular" class="p-button-success p-button-outlined"
+            (click)="onAssociateProfessor()" [disabled]="professorsSelected.length == 0 || isLoading">
+        </button>
+        <button pButton pRipple label="Cancelar" class="p-button-secondary p-button-outlined" (click)="onCancelModal()"
+            [disabled]="isLoading">
+        </button>
+    </ng-template>
+</p-dialog>

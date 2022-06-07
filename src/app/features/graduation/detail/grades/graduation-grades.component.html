@@ -1,0 +1,47 @@
+<loading-state [loading]="isLoading">
+    <ng-container *ngIf="professorsLoaded">
+        <ng-container *ngIf="canEdit">
+            <button pButton pRipple label="Salvar" class="p-button-success p-button-outlined" (click)="onSave()">
+            </button>
+
+            <br>
+        </ng-container>
+
+        <p-table [columns]="columns" [value]="records" [paginator]="true" [rows]="10" dataKey="athlete.person.code"
+            [totalRecords]="records.length" responsiveLayout="scroll" [lazy]="true" (onLazyLoad)="loadDataLazy($event)">
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th *ngFor="let col of columns">
+                        {{ col.header }}
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-data let-columns="columns">
+                <tr>
+                    <td *ngFor="let col of columns" [ngSwitch]="col.field" pEditableColumn>
+                        <span *ngSwitchCase="'athlete'">{{ data.athlete.person.name }}</span>
+                        <ng-container *ngIf="canEdit; else readOnly">
+                            <p-cellEditor *ngSwitchDefault>
+                                <ng-template pTemplate="input">
+                                    Nota: <p-inputNumber inputStyleClass="inputNumber" [(ngModel)]="data[col.field]"
+                                        [maxFractionDigits]="2" mode="decimal" [min]="0" [max]="10">
+                                    </p-inputNumber>
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    Nota: {{ data[col.field] }}
+                                </ng-template>
+                            </p-cellEditor>
+                        </ng-container>
+                        <ng-template #readOnly> <!--Ajustar aqui, não está atualizando-->
+                            <span *ngSwitchDefault> Nota: {{ data[col.field] }}</span>
+                        </ng-template>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </ng-container>
+    <app-empty-state *ngIf="errorLoadingProfessors"
+        title="Houve um erro ao carregar os professores do exame de graduação" [showFirstAction]="true"
+        firstActionLabel="Tentar novamente" (firstAction)="searchProfessors()" icon="fa-solid fa-circle-xmark">
+    </app-empty-state>
+</loading-state>

@@ -1,0 +1,40 @@
+<loading-state [loading]="isLoading">
+    <h3 style="margin-top: 0px">{{ personEdit ? 'Alterar' : 'Novo' }} usuário</h3>
+    <form [formGroup]="form">
+        <div class="formgrid grid p-fluid">
+            <div class="field col-6">
+                <label for="code">Código</label>
+                <p-inputNumber inputId="integeronly" id="code" [min]="0" formControlName="code">
+                </p-inputNumber>
+            </div>
+            <div class="field col-6">
+                <label for="document">CPF</label>
+                <p-inputMask id="document" [unmask]="true" formControlName="document" mask="999.999.999-99">
+                </p-inputMask>
+            </div>
+            <div class="field col-6">
+                <label for="name">Nome</label>
+                <input type="text" pInputText id="name" formControlName="name" />
+            </div>
+            <div class="field col-6">
+                <label for="gender">Sexo</label>
+                <p-dropdown id="gender" [options]="gender" formControlName="gender"></p-dropdown>
+            </div>
+            <div class="field col-6">
+                <label for="birth">Data de Nascimento</label>
+                <p-calendar formControlName="birth" inputId="basic" id="birth" dateFormat="dd/mm/yy" [showIcon]="true"
+                    [showButtonBar]="true">
+                </p-calendar>
+            </div>
+        </div>
+    </form>
+
+    <div class="grid">
+        <div class="col">
+            <button pButton pRipple label="Salvar" class="p-button-success mr-2" (click)="onSave()"
+                [disabled]="!form.valid">
+            </button>
+            <button pButton pRipple label="Cancelar" class="p-button-secondary " (click)="onCancel()"></button>
+        </div>
+    </div>
+</loading-state>

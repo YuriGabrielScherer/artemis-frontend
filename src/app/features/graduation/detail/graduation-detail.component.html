@@ -1,0 +1,94 @@
+<p-panel [showHeader]="false">
+    <p-timeline [value]="steps" layout="horizontal">
+        <ng-template pTemplate="marker" let-event>
+            <span class="custom-marker shadow-2" [style.backgroundColor]="event.color">
+                <fa-icon [icon]="event.icon"></fa-icon>
+            </span>
+        </ng-template>
+        <ng-template pTemplate="content" let-event>
+            <span class="titleField">{{ event.label }}</span>
+            <br>
+            <ng-container *ngIf="event.date; else noDate">
+                <span class="subTitle"> {{ event.date | date:'dd/MM/yyyy' }}</span>
+            </ng-container>
+            <ng-template #noDate>
+                <span class="italic subTitle">{{ graduation.situation =='CANCELED' ? 'Cancelado' : 'Pendente' }}</span>
+            </ng-template>
+        </ng-template>
+    </p-timeline>
+</p-panel>
+
+<br>
+
+<p-panel *loadingState="isLoading" header="Detalhes do exame">
+    <div class="grid">
+        <div class="col-6 titleField">Exame de Graduação</div>
+        <div class="col-6 titleField">Descrição</div>
+
+        <div class="col-6">{{ graduation.code + ' - ' + graduation.title }}</div>
+        <div class="col-6" [ngClass]="{'italic': !graduation.description}">{{ graduation.description ?? 'Não informado'}}</div>
+
+        <div class="col-6 titleField">Data</div>
+        <div class="col-6 titleField">Situação</div>
+
+        <div class="col-6">{{ graduation.date | date:'dd/MM/yyyy' }}</div>
+        <div class="col-6"><span [appSituationGraduation]="graduation.situation"></span></div>
+    </div>
+
+    <br>
+
+    <button *ngIf="graduation.situation == 'CREATED'" (click)="updateSituation(enumSituation.OPEN_SUBSCRIPTION)" pButton
+        pRipple label="Abrir inscrições" class="p-button-success p-button-outlined mr-2">
+    </button>
+
+    <button *ngIf="graduation.situation == 'OPEN_SUBSCRIPTION'"
+        (click)="updateSituation(enumSituation.CLOSE_SUBSCRIPTION)" pButton pRipple label="Fechar inscrições"
+        class="p-button-warning p-button-outlined mr-2">
+    </button>
+
+    <button *ngIf="graduation.situation == 'CLOSE_SUBSCRIPTION'" (click)="updateSituation(enumSituation.FINISHED)"
+        pButton pRipple label="Encerrar exame" class="p-button-secondary p-button-outlined mr-2">
+    </button>
+
+    <button *ngIf="graduation.situation != 'CANCELED' && graduation.situation != 'FINISHED'"
+        (click)="updateSituation(enumSituation.CANCELED)" pButton pRipple label="Cancelar exame"
+        class="p-button-danger p-button-outlined mr-2">
+    </button>
+</p-panel>
+
+
+<ng-container *ngIf="['CLOSE_SUBSCRIPTION', 'FINISHED'].includes(graduation.situation)">
+    <br>
+
+    <p-panel  header="Resultado do exame"
+        [toggleable]="true">
+        <app-graduation-grades [graduation]="graduation"></app-graduation-grades>
+    </p-panel>
+</ng-container>
+
+<br>
+
+<p-panel *loadingState="isLoading" header="Composição do exame">
+    <p-tabView>
+        <p-tabPanel header="Professores">
+            <app-graduation-professors [graduation]="graduation">
+            </app-graduation-professors>
+        </p-tabPanel>
+        <p-tabPanel header="Atletas">
+            <ng-template pTemplate="content">
+                <app-graduation-athletes [graduation]="graduation">
+                </app-graduation-athletes>
+            </ng-template>
+        </p-tabPanel>
+    </p-tabView>
+</p-panel>
+
+<br>
+
+<p-panel [showHeader]="false">
+    <button pButton pRipple label="Voltar" class="p-button-secondary p-button-outlined " (click)="onGoBack()"
+        [disabled]="isLoading">
+    </button>
+</p-panel>
+
+<p-confirmDialog header="Atenção" icon="pi pi-exclamation-triangle"></p-confirmDialog>

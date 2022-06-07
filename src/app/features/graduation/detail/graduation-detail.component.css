@@ -1,0 +1,19 @@
+.titleField {
+    font-weight: 700;
+}
+
+.subTitle {
+    font-size: 14px;
+}
+
+.custom-marker {
+    display: flex;
+    width: 2rem;
+    height: 2rem;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    border-radius: 50%;
+    z-index: 1;
+    padding: 1rem;
+}

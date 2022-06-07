@@ -1,0 +1,38 @@
+<p-panel header="Dados do Atleta">
+    <div class="grid">
+        <div class="col-6 titleField">Nome</div>
+        <div class="col-6 titleField">Código</div>
+
+        <div class="col-6">{{ athlete.person.name }}</div>
+        <div class="col-6">{{ athlete.person.code }}</div>
+
+        <div class="col-6 titleField">Graduação</div>
+        <div class="col-6 titleField">Data de Nascimento</div>
+
+        <div class="col-6"><span [appBelt]="athlete.belt"></span></div>
+        <div class="col-6">{{ athlete.person.birth | date:'dd/MM/yyyy' }}</div>
+    </div>
+</p-panel>
+
+<br>
+
+<p-panel header="Detalhes" [showHeader]="false">
+    <p-tabView>
+        <p-tabPanel header="Graduações">
+            <app-athlete-graduations [athlete]="athlete"></app-athlete-graduations>
+        </p-tabPanel>
+        <p-tabPanel header="Campeonatos">
+            <ng-template pTemplate="content">
+                <h3>Em construção!</h3>
+            </ng-template>
+        </p-tabPanel>
+    </p-tabView>
+</p-panel>
+
+<br>
+
+<p-panel [showHeader]="false">
+    <button pButton pRipple label="Voltar" class="p-button-secondary p-button-outlined " (click)="onGoBack()"
+        [disabled]="isLoading">
+    </button>
+</p-panel>

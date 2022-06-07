@@ -1,0 +1,43 @@
+<p-panel [showHeader]="false">
+    <loading-state [loading]="isLoading">
+        <h3 style="margin-top: 0px">{{ graduation ? 'Alterar' : 'Novo'}} exame de graduação</h3>
+        <form [formGroup]="form">
+            <div class="formgrid grid p-fluid">
+                <div class="field col-6">
+                    <label for="code">Código</label>
+                    <p-inputNumber inputId="integeronly" id="code" [min]="0" formControlName="code">
+                    </p-inputNumber>
+                </div>
+                <div class="field col-6">
+                    <label for="title">Título</label>
+                    <input type="text" pInputText id="title" formControlName="title">
+                </div>
+                <div class="field col-6">
+                    <label for="description">Descrição</label>
+                    <input type="text" pInputText id="description" formControlName="description">
+                </div>
+                <div class="field col-6">
+                    <label for="place">Local do Exame</label>
+                    <input type="text" pInputText id="place" formControlName="place">
+                </div>
+                <div class="field col-6">
+                    <label for="date">Data</label>
+                    <p-calendar formControlName="date" inputId="basic" id="date" dateFormat="dd/mm/yy" [showIcon]="true"
+                        [minDate]="today"
+                        [showButtonBar]="true">
+                    </p-calendar>
+                </div>
+            </div>
+        </form>
+
+        <div class="grid">
+            <div class="col">
+                <button pButton pRipple label="Salvar" class="p-button-success p-button-outlined mr-2"
+                    (click)="onSave()" [disabled]="!form.valid">
+                </button>
+                <button pButton pRipple label="Cancelar" class="p-button-secondary p-button-outlined "
+                    (click)="onCancel()"></button>
+            </div>
+        </div>
+    </loading-state>
+</p-panel>

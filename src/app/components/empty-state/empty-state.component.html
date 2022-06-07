@@ -1,0 +1,10 @@
+<div class="col-12 flex align-items-center justify-content-center">
+    <i [class]="icon" style="font-size: 3rem"></i>
+</div>
+<div class="col-12 flex align-items-center justify-content-center">
+    {{ title }}
+</div>
+<div *ngIf="showFirstAction && firstActionLabel" class="col-12 flex align-items-center justify-content-center">
+    <button pButton pRipple [label]="firstActionLabel" class="p-button-info p-button-outlined" (click)="firstButtonClicked()">
+    </button>
+</div>
