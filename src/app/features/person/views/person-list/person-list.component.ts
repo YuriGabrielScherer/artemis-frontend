@@ -14,8 +14,8 @@ export class PersonListComponent implements OnInit {
   public columns: GeneralTableColumnsInput[] = [
     { field: 'code', header: 'Código' },
     { field: 'name', header: 'Nome' },
-    { field: 'gender', header: 'Sexo' },
     { field: 'document', header: 'Documento'},
+    { field: 'gender', header: 'Sexo', enum: 'gender' },
     { field: 'birth', header: 'Data de Nascimento', date: true },
   ];
   public selectedData: PersonDto[] = [];

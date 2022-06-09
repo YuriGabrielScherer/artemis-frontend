@@ -14,60 +14,54 @@
 </ng-container>
 
 <ng-template #table>
-    <!-- TODO Corrigir emptyRecords -->
-    <p-table *loadingState="isLoading" [columns]="columns" [value]="data" [paginator]="true" [rows]="pageable.size"
-        [selectionMode]="singleSelection?'single':'multiple'" [(selection)]="selectedData" [dataKey]="dataKey"
-        [totalRecords]="totalRecords" [sortField]="defaultSortField" [lazy]="true" (onLazyLoad)="loadDataLazy($event)"
-        responsiveLayout="scroll" [rowsPerPageOptions]="rowsPerPage">
-        <ng-template pTemplate="header" let-columns>
-            <tr>
-                <th style="width: 3rem" *ngIf="showSelectionComponent">
-                    <p-tableHeaderCheckbox *ngIf="singleSelection == false"></p-tableHeaderCheckbox>
-                </th>
-                <th *ngFor="let col of columns" [pSortableColumn]="col.field">
-                    {{ col.header }}
-                    <p-sortIcon [field]="col.field"></p-sortIcon>
-                </th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-data let-columns="columns">
-            <tr [pSelectableRow]="data">
-                <td *ngIf="showSelectionComponent">
-                    <p-tableRadioButton *ngIf="singleSelection" [value]="data" (click)="toggleCheckBox($event)">
-                    </p-tableRadioButton>
-                    <p-tableCheckbox *ngIf="singleSelection == false" [value]="data" (click)="toggleCheckBox($event)">
-                    </p-tableCheckbox>
-                </td>
-                <td *ngFor="let col of columns" [ngSwitch]="col.enum">
-                    <span *ngSwitchCase="'graduationSituation'" [appSituationGraduation]="data[col.field]"></span>
-                    <span *ngSwitchCase="'belt'" [appBelt]="data[col.field]"></span>
-                    <span *ngSwitchDefault [ngClass]="{italic: ((data | getProperty:col) == 'Não informado')}">
-                        {{ data | getProperty:col }}
-                    </span>
-                </td>
-            </tr>
-        </ng-template>
+    <ng-container *ngIf="data.length > 0 || firstDataLoaded == false; else noRecords">
 
-        <ng-template pTemplate="summary" *ngIf="hasError == false && totalRecords > 0">
-            <div class="flex align-items-center justify-content-between">
-                {{ totalRecords }} {{ totalRecordsMessage | lowercase }}
-            </div>
-        </ng-template>
+        <p-table *loadingState="isLoading" [columns]="columns" [value]="data" [paginator]="true" [rows]="pageable.size"
+            [selectionMode]="singleSelection?'single':'multiple'" [(selection)]="selectedData" [dataKey]="dataKey"
+            [totalRecords]="totalRecords" [sortField]="defaultSortField" [lazy]="true"
+            (onLazyLoad)="loadDataLazy($event)" responsiveLayout="scroll" [rowsPerPageOptions]="rowsPerPage">
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th style="width: 3rem" *ngIf="showSelectionComponent">
+                        <p-tableHeaderCheckbox *ngIf="singleSelection == false"></p-tableHeaderCheckbox>
+                    </th>
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                        {{ col.header }}
+                        <p-sortIcon [field]="col.field"></p-sortIcon>
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-data let-columns="columns">
+                <tr [pSelectableRow]="data">
+                    <td *ngIf="showSelectionComponent">
+                        <p-tableRadioButton *ngIf="singleSelection" [value]="data" (click)="toggleCheckBox($event)">
+                        </p-tableRadioButton>
+                        <p-tableCheckbox *ngIf="singleSelection == false" [value]="data"
+                            (click)="toggleCheckBox($event)">
+                        </p-tableCheckbox>
+                    </td>
+                    <td *ngFor="let col of columns" [ngSwitch]="col.enum">
+                        <span *ngSwitchCase="'graduationSituation'" [appSituationGraduation]="data[col.field]"></span>
+                        <span *ngSwitchCase="'belt'" [appBelt]="data[col.field]"></span>
+                        <span *ngSwitchCase="'gender'" [appGender]="data[col.field]"></span>
+                        <span *ngSwitchDefault [ngClass]="{italic: ((data | getProperty:col) == 'Não informado')}">
+                            {{ data | getProperty:col }}
+                        </span>
+                    </td>
+                </tr>
+            </ng-template>
 
-        <ng-template pTemplate="emptymessage" let-columns>
-            <tr *ngIf="firstDataLoaded">
-                <td [attr.colspan]="columns.length + (showSelectionComponent ? 1 : 0)">
-                    <div class="grid">
-                        <div class="col-12 flex align-items-center justify-content-center">
-                            <i class="pi pi-thumbs-down" style="font-size: 3rem"></i>
-                        </div>
-                        <div class="col-12 flex align-items-center justify-content-center">
-                            {{ noRecordsMessage }}
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        </ng-template>
+            <ng-template pTemplate="summary" *ngIf="hasError == false && totalRecords > 0">
+                <div class="flex align-items-center justify-content-between">
+                    {{ totalRecords }} {{ totalRecordsMessage | lowercase }}
+                </div>
+            </ng-template>
+        </p-table>
+    </ng-container>
 
-    </p-table>
+    <ng-template #noRecords>
+        <app-empty-state [title]="noRecordsMessage" icon="pi pi-inbox" [showFirstAction]="true"
+            firstActionLabel="Tentar novamente" (firstAction)="onRetry()">
+        </app-empty-state>
+    </ng-template>
 </ng-template>

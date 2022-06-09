@@ -1,5 +1,6 @@
 <app-crud-component noRecordsMessage="Nenhum professor encontrado"
   [columns]="columns" [service]="professorService"
   dataKey="person.code"
+  defaultSortField="person.code"
   [(selectedData)]="selectedData">
 </app-crud-component>

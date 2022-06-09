@@ -100,7 +100,7 @@ export class PersonFormComponent implements OnInit {
 
   private createForm(): void {
     this.form = this.formBuilder.group({
-      code: [this.personEdit?.code, Validators.compose([Validators.required, Validators.min(1)])],
+      code: [{ value: this.personEdit?.code, disabled: this.personEdit != undefined }, Validators.compose([Validators.required, Validators.min(1)])],
       name: [this.personEdit?.name, Validators.compose([Validators.required])],
       gender: [this.personEdit?.gender, Validators.compose([Validators.required])],
       // TODO Validar o CPF

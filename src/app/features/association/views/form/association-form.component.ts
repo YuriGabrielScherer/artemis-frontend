@@ -127,7 +127,7 @@ export class AssociationFormComponent implements OnInit {
 
   private createForm(): void {
     this.form = this.formBuilder.group({
-      code: [this.association?.code, Validators.compose([Validators.required, Validators.min(0)])],
+      code: [{ value: this.association?.code, disabled: this.isEdit }, Validators.compose([Validators.required, Validators.min(0)])],
       name: [this.association?.name, Validators.compose([Validators.required, Validators.minLength(0)])],
       city: [this.association?.city, Validators.compose([Validators.required, Validators.minLength(0)])],
       since: [localDateToDate(this.association?.since)],

@@ -6,6 +6,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 
 import { GeneralTableComponent } from './view/general-table.component';
 import { LoadingStateModule } from '../loading-state/loading-state.module';
+import { EmptyStateModule } from '../empty-state/empty-state.module';
 
 
 @NgModule({
@@ -17,6 +18,7 @@ import { LoadingStateModule } from '../loading-state/loading-state.module';
     LibComponentsModule,
     LoadingStateModule,
     SharedModule,
+    EmptyStateModule
   ],
   exports: [
     GeneralTableComponent

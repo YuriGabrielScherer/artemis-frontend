@@ -27,7 +27,6 @@ export class AthleteGraduationsComponent extends AbstractListComponent<AthleteGr
     ];
     protected endpoint: Observable<PageableResponse<AthleteGraduationsDto>>;
 
-
     constructor(
         private athleteService: AthleteService,
     ) { super(); }

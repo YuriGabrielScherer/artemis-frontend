@@ -9,7 +9,7 @@ export interface GeneralTableColumnsInput {
   field: string,
   header: string,
   date?: boolean,
-  enum?: 'belt' | 'graduationSituation' | undefined,
+  enum?: 'belt' | 'graduationSituation' | 'gender' | undefined,
 }
 
 @Component({
@@ -55,6 +55,11 @@ export class GeneralTableComponent<Dto> implements OnInit {
   public loadDataLazy(event: LazyLoadEvent): void {
     this.pageable.size = event.rows ?? 10;
     this.pageable.page = (event.first ?? 0) / (this.pageable.size ?? 10);
+    if (event.sortField && event.sortOrder) {
+      this.pageable.sortFields = [
+        { direction: event.sortOrder == 1 ? 'ASC' : 'DESC', property: event.sortField },
+      ];
+    }
     this.fetchData();
   }
 
@@ -62,7 +67,6 @@ export class GeneralTableComponent<Dto> implements OnInit {
     this.pageable = { size: 10, page: 0 };
     this.isLoading = true;
     this.firstDataLoaded = false;
-    // this.fetchData();
   }
 
   public toggleCheckBox(event: MouseEvent): void {
@@ -76,7 +80,7 @@ export class GeneralTableComponent<Dto> implements OnInit {
       .pipe(finalize(() => this.isLoading = false))
       .subscribe({
         next: (data) => {
-          this.firstDataLoaded;
+          this.firstDataLoaded = true;
           this.data = data.records;
           this.totalRecords = data.totalRecords;
           this.hasError = false;

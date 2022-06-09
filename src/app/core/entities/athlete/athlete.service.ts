@@ -23,7 +23,6 @@ export class AthleteService extends AbstractService<AthleteDto, AthleteSaveInput
     }
 
     public listGraduations(athleteCode: number, pageable: PageableRequest): Observable<any> {
-        // console.log('Pageable: ', pageable.convertToString());
         const params = new HttpParams()
             .set('athleteCode', athleteCode)
             .set('pageable', JSON.stringify(pageable));

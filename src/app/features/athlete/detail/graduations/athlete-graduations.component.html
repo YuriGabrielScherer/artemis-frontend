@@ -1,19 +1,34 @@
 <loading-state [loading]="isLoading">
-    <p-table [columns]="columns" [value]="records" [paginator]="true" [rows]="pageable.size"
+    <p-table [columns]="columns" [value]="records" [paginator]="true" [rows]="pageable.size" dataKey="belt"
         [totalRecords]="totalRecords" [lazy]="true" (onLazyLoad)="loadDataLazy($event)" responsiveLayout="scroll">
         <ng-template pTemplate="header" let-columns>
             <tr>
+                <th style="width: 3rem"></th>
                 <th *ngFor="let col of columns" [pSortableColumn]="col.field">
                     {{ col.header }}
                     <p-sortIcon [field]="col.field"></p-sortIcon>
                 </th>
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-data let-columns="columns">
+        <ng-template pTemplate="body" let-data let-expanded="expanded" let-columns="columns">
             <tr [pSelectableRow]="data">
+                <td>
+                    <button type="button" pButton pRipple [pRowToggler]="data"
+                        class="p-button-text p-button-rounded p-button-plain"
+                        [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+                        [disabled]="data.gradeDetail?.length == 0">
+                    </button>
+                </td>
                 <td *ngFor="let col of columns" [ngSwitch]="col.field">
                     <span *ngSwitchCase="'belt'" [appBelt]="data['belt']"></span>
                     <span *ngSwitchCase="'situation'" [appSituationAthleteGraduation]="data['situation']"></span>
+                    <span *ngSwitchCase="'grade'" [ngClass]="{italic: (data['graduation'] == null)}">
+                        {{ data['graduation'] == null ? 'Sem nota' : data['grade'] | number:'1.2-2' }}
+                    </span>
+                    <span *ngSwitchCase="'graduation.date'">
+                        {{ (data | getProperty:col) == 'Não informado' ? (athlete.since | date:'dd/MM/yyyy') : data |
+                        getProperty:col }}
+                    </span>
                     <span *ngSwitchDefault [ngClass]="{italic: ((data | getProperty:col) == 'Não informado')}">
                         {{ data | getProperty:col }}
                     </span>
@@ -21,10 +36,44 @@
             </tr>
         </ng-template>
 
-        <ng-template pTemplate="summary">
-            <div class="flex align-items-center justify-content-between">
-                {{ totalRecords }} exames de graduação encontrados
-            </div>
+        <ng-template pTemplate="rowexpansion" let-graduation>
+            <tr>
+                <td colspan="7">
+                    <div class="p-3">
+                        <p-table [value]="graduation['gradeDetail']">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th pSortableColumn="professor.person.name">
+                                        Professor
+                                        <p-sortIcon field="professor.person.name"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="grade">
+                                        Nota
+                                        <p-sortIcon field="grade"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="description">
+                                        Descrição
+                                        <p-sortIcon field="description"></p-sortIcon>
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-grade>
+                                <tr>
+                                    <td>{{ grade.professor.person.name }}</td>
+                                    <td>{{ grade.grade }}</td>
+                                    <td [ngClass]="{italic: !grade.description}">{{ grade.description ?? 'Não informado' }}</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                </td>
+            </tr>
         </ng-template>
+
+    <ng-template pTemplate="summary">
+        <div class="flex align-items-center justify-content-between">
+            {{ totalRecords }} exames de graduação encontrados
+        </div>
+    </ng-template>
     </p-table>
 </loading-state>

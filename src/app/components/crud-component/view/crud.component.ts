@@ -10,7 +10,7 @@ import { AbstractService } from 'src/app/core/entities/abstract.service';
 export class CrudComponent<Dto> implements OnInit {
 
   @Input() showDetailButton: boolean = false;
-  @Input() defaultSortField: string;
+  @Input() defaultSortField: string = 'code';
   @Input() dataKey: string;
   @Input() showSelectionComponent: boolean = true;
   @Input() columns: { field: string, header: string, nested?: boolean }[];

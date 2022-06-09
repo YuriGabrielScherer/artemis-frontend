@@ -8,9 +8,14 @@
 
         <div class="col-6 titleField">Graduação</div>
         <div class="col-6 titleField">Data de Nascimento</div>
-
-        <div class="col-6"><span [appBelt]="athlete.belt"></span></div>
+        
+        <div class="col-6"><span [appBelt]="athlete.currentBelt"></span></div>
         <div class="col-6">{{ athlete.person.birth | date:'dd/MM/yyyy' }}</div>
+        
+        <div class="col-6 titleField">Atleta desde</div>
+        <div class="col-6"></div>
+
+        <div class="col-6">{{ athlete.since | date:'dd/MM/yyyy' }}</div>
     </div>
 </p-panel>
 

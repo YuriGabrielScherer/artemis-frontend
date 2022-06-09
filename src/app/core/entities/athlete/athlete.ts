@@ -3,7 +3,7 @@ import { PersonDto } from "../person/person";
 
 interface BaseAthlete {
     since: Date;
-    belt: EnumBelt;
+    currentBelt: EnumBelt;
 }
 export interface AthleteSaveInput extends BaseAthlete {
     code: number;

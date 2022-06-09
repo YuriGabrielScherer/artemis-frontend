@@ -1,7 +1,7 @@
 export interface PageableRequest {
     page: number;
     size: number;
-    sort?: {
+    sortFields?: {
         property: string;
         direction: 'ASC' | 'DESC';
     }[];

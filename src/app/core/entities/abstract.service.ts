@@ -1,5 +1,5 @@
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
-import { catchError, Observable, take, throwError } from 'rxjs';
+import { catchError, map, Observable, take, throwError } from 'rxjs';
 
 import { MessageService } from 'primeng/api';
 import { environment } from 'src/environments/environment';
@@ -37,10 +37,8 @@ export abstract class AbstractService<Dto, SaveInput> {
     }
 
     public find(input: PageableRequest, filter?: any): Observable<PageableResponse<Dto>> {
-
-        let params = new HttpParams()
-            .set('page', input.page)
-            .set('size', input.size);
+        
+        let params = new HttpParams().set('pageable', JSON.stringify(input));
         if (filter != undefined) {
             params = params.set('filter', JSON.stringify(filter));
         }
@@ -49,7 +47,7 @@ export abstract class AbstractService<Dto, SaveInput> {
             params,
         }).pipe(
             take(1),
-            catchError(this.handleError.bind(this))
+            catchError(this.handleError.bind(this))            
         );
     }
 

@@ -17,8 +17,13 @@
             <div class="col-6 titleField">Graduação</div>
             <div class="col-6 titleField">Data de Nascimento</div>
 
-            <div class="col-6"><span [appBelt]="athleteToEdit!.belt"></span></div>
+            <div class="col-6"><span [appBelt]="athleteToEdit!.currentBelt"></span></div>
             <div class="col-6">{{ athleteToEdit!.person.birth | date:'dd/MM/yyyy' }}</div>
+
+            <div class="col-6 titleField">Atleta desde</div>
+            <div class="col-6"></div>
+    
+            <div class="col-6">{{ athleteToEdit!.since | date:'dd/MM/yyyy' }}</div>
         </div>
     </ng-template>
 </p-panel>

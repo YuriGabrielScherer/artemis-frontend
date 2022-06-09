@@ -1,54 +1,56 @@
-<loading-state [loading]="isLoading">
-    <h3 style="margin-top: 0px">{{isEdit ? 'Alterar' : 'Nova'}} associação</h3>
-    <form [formGroup]="form">
-        <div class="formgrid grid p-fluid">
-            <div class="field col-6">
-                <label for="code">Código</label>
-                <p-inputNumber inputId="integeronly" id="code" [min]="0" formControlName="code">
-                </p-inputNumber>
-            </div>
-            <div class="field col-6">
-                <label for="name">Nome</label>
-                <input type="text" pInputText id="name" formControlName="name" />
-            </div>
-            <div class="field col-6">
-                <label for="city">Cidade</label>
-                <input type="text" pInputText id="city" formControlName="city" />
-            </div>
-            <div class="field col-6">
-                <label for="since">Fundação</label>
-                <p-calendar formControlName="since" inputId="basic" id="since" dateFormat="dd/mm/yy" [showIcon]="true"
-                    [showButtonBar]="true">
-                </p-calendar>
-            </div>
-            <div class="field col-6">
-                <label>Responsável pela associação</label>
-                <button
-                    [label]="currentManager ? currentManager.code + ' - ' + currentManager.name : 'Selecione um responsável'"
-                    type="text" pButton icon="pi pi-search" (click)="op.toggle($event)">
-                </button>
-                <p-overlayPanel #op [showCloseIcon]="true">
-                    <ng-template pTemplate>
-                        <app-general-table noRecordsMessage="Nenhum responsável encontrado" [columns]="managerColumns"
-                            [service]="personService" [singleSelection]="true" [(selectedData)]="selectedManager"
-                            [rowsPerPage]="[5, 10]" [rows]="5">
-                        </app-general-table>
-                    </ng-template>
-                </p-overlayPanel>
+<p-panel header="{{ isEdit ? 'Alterar' : 'Nova'}} Associação ">
+    <loading-state [loading]="isLoading">
+        <form [formGroup]="form">
+            <div class="formgrid grid p-fluid">
+                <div class="field col-6">
+                    <label for="code">Código</label>
+                    <p-inputNumber inputId="integeronly" id="code" [min]="0" formControlName="code">
+                    </p-inputNumber>
+                </div>
+                <div class="field col-6">
+                    <label for="name">Nome</label>
+                    <input type="text" pInputText id="name" formControlName="name" />
+                </div>
+                <div class="field col-6">
+                    <label for="city">Cidade</label>
+                    <input type="text" pInputText id="city" formControlName="city" />
+                </div>
+                <div class="field col-6">
+                    <label for="since">Fundação</label>
+                    <p-calendar formControlName="since" inputId="basic" id="since" dateFormat="dd/mm/yy"
+                        [showIcon]="true" [showButtonBar]="true">
+                    </p-calendar>
+                </div>
+                <div class="field col-6">
+                    <label>Responsável pela associação</label>
+                    <button
+                        [label]="currentManager ? currentManager.code + ' - ' + currentManager.name : 'Selecione um responsável'"
+                        class="p-button-outlined" type="text" pButton icon="pi pi-search" (click)="op.toggle($event)">
+                    </button>
+                    <p-overlayPanel #op [showCloseIcon]="true">
+                        <ng-template pTemplate>
+                            <app-general-table noRecordsMessage="Nenhum responsável encontrado"
+                                [columns]="managerColumns" [service]="personService" [singleSelection]="true"
+                                [(selectedData)]="selectedManager" [rowsPerPage]="[5, 10]" [rows]="5">
+                            </app-general-table>
+                        </ng-template>
+                    </p-overlayPanel>
 
 
+                </div>
             </div>
-        </div>
-    </form>
+        </form>
 
-    <div class="grid">
-        <div class="col">
-            <button pButton pRipple label="Salvar" class="p-button-success mr-2" (click)="onSave()"
-                [disabled]="!form.valid">
-            </button>
-            <!-- <button *ngIf="isEdit" pButton pRipple label="Excluir" class="p-button-danger mr-2" (click)="onDelete()">
-            </button> -->
-            <button pButton pRipple label="Cancelar" class="p-button-secondary " (click)="onCancel()"></button>
-        </div>
-    </div>
-</loading-state>
+    </loading-state>
+</p-panel>
+
+<br />
+
+<p-panel [showHeader]="false">
+    <button pButton pRipple label="Salvar" class="p-button-success p-button-outlined mr-2" (click)="onSave()"
+        [disabled]="!form.valid || isLoading">
+    </button>
+    <!-- <button *ngIf="isEdit" pButton pRipple label="Excluir" class="p-button-danger mr-2" (click)="onDelete()"></button> -->
+    <button pButton pRipple label="Cancelar" class="p-button-secondary p-button-outlined" (click)="onCancel()"
+        [disabled]="isLoading"></button>
+</p-panel>
