@@ -7,7 +7,6 @@ import { SharedModule } from '../shared/shared.module';
 import { LoadingStateModule } from './loading-state/loading-state.module';
 import { EmptyStateModule } from './empty-state/empty-state.module';
 
-
 @NgModule({
   exports: [
     GeneralTableModule,

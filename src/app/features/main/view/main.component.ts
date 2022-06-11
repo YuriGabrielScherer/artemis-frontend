@@ -1,4 +1,5 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { CustomLocalStorage } from 'src/app/shared/storage/local-storage';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -20,11 +21,8 @@ export class MainComponent implements OnInit {
 
   public showMenu: boolean = true;
 
-  constructor(
-  ) { }
-
   ngOnInit(): void {
-    this.showMenu = localStorage.getItem('isMenuToggled') == 'true';
+    this.showMenu = CustomLocalStorage.isMenuToggled();
   }
 
   public onToggleMenu(): void {

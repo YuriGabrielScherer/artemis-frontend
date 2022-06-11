@@ -1,7 +1,7 @@
-<p-panel header="Dados do Atleta" *loadingState="isLoading">
+<p-panel [header]="!athleteToEdit?'Selecione uma pessoa':'Dados do Atleta'" *loadingState="isLoading">
     <ng-container *ngIf="!athleteToEdit; else dataRow">
         <app-general-table noRecordsMessage="Nenhuma pessoa encontrada" [columns]="personColumns"
-            [service]="personService" [apiFilter]="{onlyPerson: true}" [singleSelection]="true"
+            [service]="personService" [apiFilter]="{notAthlete: true}" [singleSelection]="true"
             [(selectedData)]="selectedPerson" [rowsPerPage]="[5, 10]" [rows]="5">
         </app-general-table>
     </ng-container>
@@ -22,7 +22,7 @@
 
             <div class="col-6 titleField">Atleta desde</div>
             <div class="col-6"></div>
-    
+
             <div class="col-6">{{ athleteToEdit!.since | date:'dd/MM/yyyy' }}</div>
         </div>
     </ng-template>

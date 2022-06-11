@@ -20,8 +20,6 @@ import { EnumToastSeverity } from 'src/app/shared/utils/enum-toast-severity';
 })
 export class AthleteFormComponent implements OnInit {
 
-  // TODO: Validar para listar apenas usuários que não seja atletas
-
   public isLoading = false;
   public form: FormGroup;
   public athleteToEdit?: AthleteDto;

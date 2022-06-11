@@ -1,7 +1,9 @@
 <div class="grid">
     <div class="col-12">
         <p-panel [showHeader]="false">
-            <button pButton pRipple type="button" icon="pi pi-bars" class="p-button-rounded" (click)="toggleMenu()"></button>
+            <button pButton pRipple type="button" [icon]="showMenu ? 'pi pi-chevron-left' : 'pi pi-chevron-right'"
+                class="p-button-rounded" (click)="toggleMenu()">
+            </button>
         </p-panel>
     </div>
 </div>

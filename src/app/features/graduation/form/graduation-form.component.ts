@@ -69,12 +69,11 @@ export class GraduationFormComponent implements OnInit {
 
   public onCancel(): void {
     this.router.navigate(['/graduation']);
-
   }
 
   private createForm(): void {
     this.form = this.formBuilder.group({
-      code: [this.graduation?.code, Validators.compose([Validators.required, Validators.min(1)])],
+      code: [{ value: this.graduation?.code, disabled: this.graduation != undefined }, Validators.compose([Validators.required, Validators.min(1)])],
       title: [this.graduation?.title, Validators.compose([Validators.required])],
       description: [this.graduation?.description],
       place: [this.graduation?.place],
