@@ -1,0 +1,28 @@
+<p-panel header="Editar Faixa">
+    <loading-state [loading]="isLoading">
+        <form [formGroup]="form">
+            <div class="formgrid grid p-fluid">
+                <div class="field col-6">
+                    <label for="belt">Faixa</label>
+                    <input type="text" pInputText id="belt" formControlName="belt" />
+                </div>
+                <div class="field col-6">
+                    <label for="minMonths">Quantidade mínima de meses</label>
+                    <p-inputNumber autofocus inputId="integeronly" id="minMonths" [min]="1" formControlName="minMonths">
+                    </p-inputNumber>
+                </div>
+            </div>
+        </form>
+    </loading-state>
+</p-panel>
+
+<br />
+
+<p-panel [showHeader]="false">
+    <button pButton pRipple label="Salvar" class="p-button-success p-button-outlined mr-2" (click)="onSave()"
+        [disabled]="!form.valid || isLoading">
+    </button>
+    <button pButton pRipple label="Cancelar" class="p-button-secondary p-button-outlined" [disabled]="isLoading"
+        (click)="onCancel()">
+    </button>
+</p-panel>

@@ -17,4 +17,12 @@ export class ToastService {
         });
     }
 
+    public warning(description: string): void {
+        this.messageService.add({
+            severity: EnumToastSeverity.WARNING,
+            summary: 'Atenção',
+            detail: description,
+        });
+    }
+
 }

@@ -51,17 +51,17 @@
                                         Nota
                                         <p-sortIcon field="grade"></p-sortIcon>
                                     </th>
-                                    <th pSortableColumn="description">
+                                    <!-- <th pSortableColumn="description">
                                         Descrição
                                         <p-sortIcon field="description"></p-sortIcon>
-                                    </th>
+                                    </th> -->
                                 </tr>
                             </ng-template>
                             <ng-template pTemplate="body" let-grade>
                                 <tr>
                                     <td>{{ grade.professor.person.name }}</td>
                                     <td>{{ grade.grade }}</td>
-                                    <td [ngClass]="{italic: !grade.description}">{{ grade.description ?? 'Não informado' }}</td>
+                                    <!-- <td [ngClass]="{italic: !grade.description}">{{ grade.description ?? 'Não informado' }}</td> -->
                                 </tr>
                             </ng-template>
                         </p-table>

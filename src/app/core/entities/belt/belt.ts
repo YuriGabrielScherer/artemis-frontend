@@ -9,5 +9,16 @@ export const BELT_OPTIONS: { label: string, value: string }[] = [
     { label: 'Roxa', value: EnumBelt.PURPLE },
     { label: 'Marrom', value: EnumBelt.BROWN },
     { label: 'Preta', value: EnumBelt.BLACK },
-
 ];
+
+interface BaseBelt {
+    belt: EnumBelt;
+    minMonths: number;
+}
+
+export interface BeltDto extends BaseBelt {
+    sequence: number;
+}
+
+export interface BeltSaveInput extends BaseBelt {
+}

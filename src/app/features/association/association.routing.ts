@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AssociationFormComponent } from './views/form/association-form.component';
 import { AssociationComponent } from './views/list/association.component';
 
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   template: '<router-outlet></router-outlet>'

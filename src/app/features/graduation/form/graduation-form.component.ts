@@ -5,10 +5,9 @@ import { finalize } from 'rxjs';
 
 import { GraduationDto, GraduationSaveInput } from 'src/app/core/entities/graduation/graduation';
 import { GraduationService } from 'src/app/core/entities/graduation/graduation.service';
-import { MessageService } from 'primeng/api';
 
 import { localDateToDate } from 'src/app/shared/utils/date-util';
-import { EnumToastSeverity } from 'src/app/shared/utils/enum-toast-severity';
+import { ToastService } from 'src/app/core/services/toast.service';
 
 @Component({
   selector: 'app-graduation-form',
@@ -26,7 +25,7 @@ export class GraduationFormComponent implements OnInit {
     private graduationService: GraduationService,
     private router: Router,
     private formBuilder: FormBuilder,
-    private messageService: MessageService,
+    private toastService: ToastService,
   ) {
     const state = this.router.getCurrentNavigation()?.extras.state;
     if (!state) {
@@ -53,11 +52,7 @@ export class GraduationFormComponent implements OnInit {
       .pipe(finalize(() => this.isLoading = false))
       .subscribe({
         next: () => {
-          this.messageService.add({
-            severity: EnumToastSeverity.SUCCESS,
-            summary: 'Sucesso!',
-            detail: 'Exame de Graduação salvo com sucesso.',
-          });
+          this.toastService.success('Exame de Graduação salvo com sucesso.');
           this.router.navigate(['/graduation']);
         },
         error: (error) => {
@@ -73,7 +68,7 @@ export class GraduationFormComponent implements OnInit {
 
   private createForm(): void {
     this.form = this.formBuilder.group({
-      code: [{ value: this.graduation?.code, disabled: this.graduation != undefined }, Validators.compose([Validators.required, Validators.min(1)])],
+      code: [{ value: this.graduation?.code, disabled: true }, Validators.compose([Validators.min(1)])],
       title: [this.graduation?.title, Validators.compose([Validators.required])],
       description: [this.graduation?.description],
       place: [this.graduation?.place],

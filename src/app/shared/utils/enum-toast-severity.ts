@@ -1,6 +1,6 @@
 export enum EnumToastSeverity {
     SUCCESS = 'success',
     ERROR = 'error',
-    WARNING = 'warning',
+    WARNING = 'warn',
     INFO = 'info'
 }

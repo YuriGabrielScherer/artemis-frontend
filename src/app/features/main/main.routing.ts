@@ -27,6 +27,10 @@ const routes: Routes = [
         path: 'graduation',
         loadChildren: () => import('../graduation/graduation.module').then(m => m.GraduationModule),
       },
+      {
+        path: 'belt',
+        loadChildren: () => import('../belt/belt.module').then(m => m.BeltModule),
+      },
     ]
   }
 ];

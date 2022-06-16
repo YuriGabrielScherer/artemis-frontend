@@ -15,7 +15,7 @@ export class AthleteListComponent {
     { field: 'person.name', header: 'Nome' },
     { field: 'person.association.name', header: 'Associação' },
     { field: 'person.association.city', header: 'Cidade' },
-    { field: 'currentBelt', header: 'Graduação', enum: 'belt' },
+    { field: 'currentBelt', header: 'Graduação', enum: 'belt', sortField: 'currentBelt.sequence' },
     { field: 'since', header: 'Início', date: true },
   ];
   public selectedData: AthleteDto;

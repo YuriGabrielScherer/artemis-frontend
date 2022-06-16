@@ -9,7 +9,8 @@ export interface GeneralTableColumnsInput {
   field: string,
   header: string,
   date?: boolean,
-  enum?: 'belt' | 'graduationSituation' | 'gender' | undefined,
+  sortField?: string,
+  enum?: 'belt' | 'graduationSituation' | 'gender' | 'cpf' | undefined,
 }
 
 @Component({

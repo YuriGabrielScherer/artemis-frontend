@@ -27,12 +27,10 @@ export class GraduationService extends AbstractService<GraduationDto, Graduation
     }
 
     public listGraduationGrades(graduationCode: number, pageable: PageableRequest): Observable<PageableResponse<ListGraduationGradesOutput>> {
+        const params = new HttpParams().set('pageable', JSON.stringify(pageable));
         return this.http.get<PageableResponse<ListGraduationGradesOutput>>(`${super.getUrl()}/listGraduationGrades`,
             {
-                params: new HttpParams() //
-                    .set('graduationCode', graduationCode)
-                    .set('page', pageable.page)
-                    .set('size', pageable.size),
+                params: params.set('graduationCode', graduationCode)
             }).pipe(
                 take(1),
                 catchError(this.handleError.bind(this)),
@@ -45,12 +43,10 @@ export class GraduationService extends AbstractService<GraduationDto, Graduation
     }
 
     public listProfessors(graduationCode: number, input: PageableRequest): Observable<PageableResponse<ProfessorDto>> {
+        let params = new HttpParams().set('pageable', JSON.stringify(input));
         return this.http.get<PageableResponse<ProfessorDto>>(`${super.getUrl()}/listProfessors`,
             {
-                params: new HttpParams() //
-                    .set('graduationCode', graduationCode)
-                    .set('page', input.page)
-                    .set('size', input.size),
+                params: params.set('graduationCode', graduationCode)
             }
         ).pipe(
             take(1),
@@ -59,12 +55,10 @@ export class GraduationService extends AbstractService<GraduationDto, Graduation
     }
 
     public listAthletes(graduationCode: number, input: PageableRequest): Observable<PageableResponse<AthleteGraduationDto>> {
+        let params = new HttpParams().set('pageable', JSON.stringify(input));
         return this.http.get<PageableResponse<AthleteGraduationDto>>(`${super.getUrl()}/listAthletes`,
             {
-                params: new HttpParams() //
-                    .set('graduationCode', graduationCode)
-                    .set('page', input.page)
-                    .set('size', input.size),
+                params: params.set('graduationCode', graduationCode)
             }
         ).pipe(
             take(1),
@@ -88,8 +82,8 @@ export class GraduationService extends AbstractService<GraduationDto, Graduation
             );
     }
 
-    public requestParticipation(payload: RequestParticipationInput): Observable<void> {
-        return this.http.post<void>(`${super.getUrl()}/requestParticipation`, payload)
+    public requestParticipation(payload: RequestParticipationInput): Observable<string[]> {
+        return this.http.post<string[]>(`${super.getUrl()}/requestParticipation`, payload)
             .pipe(
                 take(1),
                 catchError(this.handleError.bind(this))

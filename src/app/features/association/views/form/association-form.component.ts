@@ -2,15 +2,16 @@ import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
 import { finalize } from 'rxjs';
+
 import { GeneralTableColumnsInput } from 'src/app/components/general-table/view/general-table.component';
 import { AssociationDto, AssociationSaveInput } from 'src/app/core/entities/association/association';
-import { AssociationService } from 'src/app/core/entities/association/association.service';
 import { PersonDto } from 'src/app/core/entities/person/person';
-import { PersonService } from 'src/app/core/entities/person/person.service';
 import { localDateToDate } from 'src/app/shared/utils/date-util';
-import { EnumToastSeverity } from 'src/app/shared/utils/enum-toast-severity';
+
+import { AssociationService } from 'src/app/core/entities/association/association.service';
+import { PersonService } from 'src/app/core/entities/person/person.service';
+import { ToastService } from 'src/app/core/services/toast.service';
 
 @Component({
   selector: 'app-association-form',
@@ -54,7 +55,7 @@ export class AssociationFormComponent implements OnInit {
     private router: Router,
     private formBuilder: FormBuilder,
     private associationService: AssociationService,
-    private messageService: MessageService,
+    private toastService: ToastService,
     public personService: PersonService,
 
   ) {
@@ -84,11 +85,7 @@ export class AssociationFormComponent implements OnInit {
       .pipe(finalize(() => this.isLoading = false))
       .subscribe({
         next: () => {
-          this.messageService.add({
-            severity: EnumToastSeverity.SUCCESS,
-            summary: 'Sucesso!',
-            detail: 'Associação salva com sucesso.'
-          });
+          this.toastService.success('Associação salva com sucesso.');
           this.router.navigate(['/association']);
         },
         error: (error) => {
@@ -100,7 +97,6 @@ export class AssociationFormComponent implements OnInit {
 
 
   public onDelete(): void {
-    // TODO Confirmação exclusão
     this.isLoading = true;
 
     this.associationService.delete(this.association!.code)
@@ -108,11 +104,7 @@ export class AssociationFormComponent implements OnInit {
         finalize(() => this.isLoading = false)
       ).subscribe({
         next: () => {
-          this.messageService.add({
-            severity: EnumToastSeverity.SUCCESS,
-            summary: 'Sucesso!',
-            detail: 'Associação excluída com sucesso.'
-          });
+          this.toastService.success('Associação excluída com sucesso.');
           this.router.navigate(['/association']);
         },
         error: (error) => {
@@ -127,7 +119,7 @@ export class AssociationFormComponent implements OnInit {
 
   private createForm(): void {
     this.form = this.formBuilder.group({
-      code: [{ value: this.association?.code, disabled: this.isEdit }, Validators.compose([Validators.required, Validators.min(0)])],
+      code: [{ value: this.association?.code, disabled: true }, Validators.compose([Validators.min(0)])],
       name: [this.association?.name, Validators.compose([Validators.required, Validators.minLength(0)])],
       city: [this.association?.city, Validators.compose([Validators.required, Validators.minLength(0)])],
       since: [localDateToDate(this.association?.since)],

@@ -1,0 +1,55 @@
+<p-panel [showHeader]="false">
+    <div class="grid">
+        <div class="col">
+            <button pButton pRipple label="Editar" class="p-button-secondary p-button-outlined mr-2" (click)="edit()"
+                [disabled]="!selectedBelt">
+            </button>
+        </div>
+    </div>
+
+    <br />
+
+    <ng-container *ngIf="records.length > 0 || firstDataLoaded == false">
+
+        <loading-state [loading]="isLoading">
+            <p-table *ngIf="hasError == false; else error" [columns]="columns" [value]="records" [paginator]="true"
+                selectionMode="single" [(selection)]="selectedBelt" [rows]="pageable.size" dataKey="belt"
+                [totalRecords]="totalRecords" sortField="sequence" [lazy]="true" (onLazyLoad)="loadDataLazy($event)"
+                responsiveLayout="scroll">
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th style="width: 3rem;"></th>
+                        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                            {{ col.header }}
+                            <p-sortIcon [field]="col.field"></p-sortIcon>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-data let-columns="columns">
+                    <tr [pSelectableRow]="data">
+                        <td>
+                            <p-tableRadioButton [value]="data" (click)="toggleCheckBox($event)">
+                            </p-tableRadioButton>
+                        </td>
+                        <td *ngFor="let col of columns" [ngSwitch]="col.field">
+                            <span *ngSwitchCase="'belt'">{{ data[col.field] | beltName }}</span>
+                            <span *ngSwitchDefault> {{ data[col.field] }} </span>
+                        </td>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="summary">
+                    <div class="flex align-items-center justify-content-between">
+                        {{ totalRecords }} faixas encontradas
+                    </div>
+                </ng-template>
+            </p-table>
+        </loading-state>
+
+        <ng-template #error>
+            <app-empty-state title="Erro ao processar sua requisição" icon="pi pi-inbox" [showFirstAction]="true"
+                firstActionLabel="Tentar novamente" (firstAction)="onRetry()">
+            </app-empty-state>
+        </ng-template>
+    </ng-container>
+</p-panel>

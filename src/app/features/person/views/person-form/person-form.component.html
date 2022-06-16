@@ -1,4 +1,4 @@
-<p-panel header="{{ personEdit ? 'Alterar' : 'Novo' }} Usuário">
+<p-panel header="{{ personEdit ? 'Editar' : 'Novo' }} Usuário">
     <loading-state [loading]="isLoading">
         <form [formGroup]="form">
             <div class="formgrid grid p-fluid">
@@ -8,13 +8,13 @@
                     </p-inputNumber>
                 </div>
                 <div class="field col-6">
+                    <label for="name">Nome</label>
+                    <input autofocus type="text" pInputText id="name" formControlName="name" />
+                </div>
+                <div class="field col-6">
                     <label for="document">CPF</label>
                     <p-inputMask id="document" [unmask]="true" formControlName="document" mask="999.999.999-99">
                     </p-inputMask>
-                </div>
-                <div class="field col-6">
-                    <label for="name">Nome</label>
-                    <input type="text" pInputText id="name" formControlName="name" />
                 </div>
                 <div class="field col-6">
                     <label for="gender">Sexo</label>
@@ -25,6 +25,21 @@
                     <p-calendar formControlName="birth" inputId="basic" id="birth" dateFormat="dd/mm/yy"
                         [showIcon]="true" [showButtonBar]="true">
                     </p-calendar>
+                </div>
+                <div class="field col-6">
+                    <label>Associação</label>
+                    <button
+                        [label]="associationLabel"
+                        class="p-button-outlined" type="text" pButton icon="pi pi-search" (click)="op.toggle($event)">
+                    </button>
+                    <p-overlayPanel #op [showCloseIcon]="true">
+                        <ng-template pTemplate>
+                            <app-general-table noRecordsMessage="Nenhuma associação encontrada"
+                                [columns]="associationColumns" [service]="associationService" [singleSelection]="true"
+                                [(selectedData)]="associationSelected" [rowsPerPage]="[5, 10]" [rows]="5">
+                            </app-general-table>
+                        </ng-template>
+                    </p-overlayPanel>
                 </div>
             </div>
         </form>

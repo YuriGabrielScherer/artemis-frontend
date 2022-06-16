@@ -6,7 +6,7 @@
                 class="p-button-help p-button-outlined mr-2" (click)="detail()"
                 [disabled]="!selectedData || selectedData.length != 1">
             </button>
-            <button pButton pRipple label="Editar" class="p-button-secondary p-button-outlined mr-2" (click)="edit()"
+            <button *ngIf="showEditButton" pButton pRipple label="Editar" class="p-button-secondary p-button-outlined mr-2" (click)="edit()"
                 [disabled]="!selectedData || selectedData.length != 1">
             </button>
 
@@ -14,6 +14,6 @@
     </div>
 
     <app-general-table [columns]="columns" [dataKey]="dataKey" [service]="service" [(selectedData)]="selectedData"
-        [defaultSortField]="defaultSortField">
+        [defaultSortField]="defaultSortField" [showSelectionComponent]="showEditButton">
     </app-general-table>
 </p-panel>

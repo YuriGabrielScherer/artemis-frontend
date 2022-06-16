@@ -60,8 +60,7 @@
 <ng-container *ngIf="['CLOSE_SUBSCRIPTION', 'FINISHED'].includes(graduation.situation)">
     <br>
 
-    <p-panel  header="Resultado do exame"
-        [toggleable]="true">
+    <p-panel  header="Resultado do exame">
         <app-graduation-grades [graduation]="graduation"></app-graduation-grades>
     </p-panel>
 </ng-container>

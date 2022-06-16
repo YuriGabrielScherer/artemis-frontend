@@ -27,7 +27,6 @@ export class GraduationAthletesComponent extends AbstractListComponent<AthleteGr
         { field: 'belt', header: 'Faixa' },
         { field: 'situation', header: 'Situação' },
     ];
-    protected endpoint: Observable<PageableResponse<AthleteGraduationDto>>;
 
     constructor(
         private graduationService: GraduationService,
@@ -35,7 +34,6 @@ export class GraduationAthletesComponent extends AbstractListComponent<AthleteGr
 
     public ngOnInit(): void {
         this.canAssociate = this.graduation.situation == EnumGraduationSituation.OPEN_SUBSCRIPTION;
-        this.endpoint = this.graduationService.listAthletes(this.graduation.code, this.pageable);
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -73,4 +71,9 @@ export class GraduationAthletesComponent extends AbstractListComponent<AthleteGr
             });
 
     }
+
+    protected endpoint(): Observable<PageableResponse<AthleteGraduationDto>> {
+        return this.graduationService.listAthletes(this.graduation.code, this.pageable);
+    }
+
 }

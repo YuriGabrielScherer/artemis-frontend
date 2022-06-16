@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { finalize } from 'rxjs';
+import { AssociationDto } from 'src/app/core/entities/association/association';
+import { AssociationService } from 'src/app/core/entities/association/association.service';
 
 import { PersonDto } from 'src/app/core/entities/person/person';
 import { PersonService } from 'src/app/core/entities/person/person.service';
@@ -16,6 +18,11 @@ import { EnumToastSeverity } from 'src/app/shared/utils/enum-toast-severity';
 })
 export class PersonFormComponent implements OnInit {
 
+  public associationColumns: { field: string, header: string }[] = [
+    { field: 'code', header: 'Código' },
+    { field: 'name', header: 'Nome' },
+  ];
+
   public gender: { label: string, value: string }[] = [
     { value: 'MALE', label: 'Masculino' },
     { value: 'FEMALE', label: 'Feminino' },
@@ -23,12 +30,27 @@ export class PersonFormComponent implements OnInit {
   public form: FormGroup;
   public isLoading: boolean = false;
   public personEdit?: PersonDto;
+  public associationLabel: string = 'Selecione uma associação';
+
+  private _associationSelected?: AssociationDto | undefined;
+  public get associationSelected(): AssociationDto | undefined {
+    return this._associationSelected;
+  }
+  public set associationSelected(value: AssociationDto | undefined) {
+    if (!value) {
+      this.associationLabel = 'Selecione uma associação';
+    } else {
+      this.associationLabel = `${value.code} - ${value.name}`;
+    }
+    this._associationSelected = value;
+  }
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private personService: PersonService,
     private messageService: MessageService,
+    public associationService: AssociationService
   ) {
     const state = router.getCurrentNavigation()?.extras.state;
     if (!state || !state['entity']) {
@@ -50,6 +72,12 @@ export class PersonFormComponent implements OnInit {
 
     this.isLoading = true;
     const payload = this.form.value;
+    if (this.personEdit) {
+      payload.code = this.personEdit!.code;
+    }
+    if (this.associationSelected) {
+      payload.associationCode = this.associationSelected.code;
+    }
     this.personService.save(payload)
       .pipe(
         finalize(() => this.isLoading = false)
@@ -73,7 +101,6 @@ export class PersonFormComponent implements OnInit {
     if (!this.personEdit) {
       return;
     }
-    // TODO Confirmação exclusão
     this.isLoading = true;
     this.personService.delete(this.personEdit.code)
       .pipe(
@@ -88,7 +115,6 @@ export class PersonFormComponent implements OnInit {
           this.router.navigate(['person']);
         },
         error: (error) => {
-          // TODO Toast
           console.log('Error: ', error);
         }
       });
@@ -100,13 +126,17 @@ export class PersonFormComponent implements OnInit {
 
   private createForm(): void {
     this.form = this.formBuilder.group({
-      code: [{ value: this.personEdit?.code, disabled: this.personEdit != undefined }, Validators.compose([Validators.required, Validators.min(1)])],
+      code: [{ value: this.personEdit?.code, disabled: true }, Validators.compose([Validators.min(1)])],
       name: [this.personEdit?.name, Validators.compose([Validators.required])],
-      gender: [this.personEdit?.gender, Validators.compose([Validators.required])],
+      gender: [this.personEdit?.gender ?? this.gender[0].value, Validators.compose([Validators.required])],
       // TODO Validar o CPF
       document: [this.personEdit?.document],
       birth: [localDateToDate(this.personEdit?.birth), Validators.compose([])],
       associationCode: [this.personEdit?.association?.code, Validators.compose([Validators.min(1)])],
     });
+
+    if (this.personEdit && this.personEdit.association) {
+      this.associationSelected = this.personEdit!.association;
+    }
   }
 }

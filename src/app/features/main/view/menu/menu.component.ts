@@ -59,6 +59,11 @@ export class MenuComponent implements OnInit {
             icon: PrimeIcons.CALENDAR,
             routerLink: ['/graduation'],
           },
+          {
+            label: 'Faixas',
+            icon: PrimeIcons.CODE,
+            routerLink: ['/belt'],
+          },
         ]
       },
       {
@@ -66,12 +71,10 @@ export class MenuComponent implements OnInit {
         items: [{
           label: 'Cadastrados',
           icon: 'pi pi-external-link',
-          url: 'http://angular.io'
         },
         {
           label: 'Router',
           icon: 'pi pi-upload',
-          routerLink: '/fileupload'
         }
         ]
       }

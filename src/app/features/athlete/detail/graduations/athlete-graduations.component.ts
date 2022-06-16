@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { GeneralTableColumnsInput } from 'src/app/components/general-table/view/general-table.component';
 
@@ -14,7 +14,7 @@ import { AbstractListComponent } from 'src/app/shared/abstract-list-component/ab
     styleUrls: ['./athlete-graduations.component.css']
 })
 
-export class AthleteGraduationsComponent extends AbstractListComponent<AthleteGraduationsDto> implements OnInit {
+export class AthleteGraduationsComponent extends AbstractListComponent<AthleteGraduationsDto>  {
 
     @Input() athlete: AthleteDto;
 
@@ -25,13 +25,14 @@ export class AthleteGraduationsComponent extends AbstractListComponent<AthleteGr
         { field: 'situation', header: 'Situação' },
         { field: 'grade', header: 'Nota' },
     ];
-    protected endpoint: Observable<PageableResponse<AthleteGraduationsDto>>;
 
     constructor(
         private athleteService: AthleteService,
     ) { super(); }
 
-    ngOnInit() {
-        this.endpoint = this.athleteService.listGraduations(this.athlete.person.code, this.pageable);
+
+    protected endpoint(): Observable<PageableResponse<AthleteGraduationsDto>> {
+        return this.athleteService.listGraduations(this.athlete.person.code, this.pageable);
     }
+
 }

@@ -13,7 +13,7 @@
             <ng-container *ngIf="firstDataLoaded == false || records.length > 0; else emptyAvailableathletes">
                 <p-table *loadingState="isLoading" [columns]="columns" [value]="records" [paginator]="true"
                     [rows]="pageable.size" selectionMode="multiple" [(selection)]="athletesSelected"
-                    dataKey="person.code" [totalRecords]="totalRecords" sortField="code" [lazy]="true"
+                    dataKey="person.code" [totalRecords]="totalRecords" sortField="person.code" [lazy]="true"
                     (onLazyLoad)="loadDataLazy($event)" responsiveLayout="scroll">
                     <ng-template pTemplate="header" let-columns>
                         <tr>

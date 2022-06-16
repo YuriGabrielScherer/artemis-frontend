@@ -1,15 +1,14 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MessageService } from 'primeng/api';
 import { finalize, Observable } from 'rxjs';
 
 import { GeneralTableColumnsInput } from 'src/app/components/general-table/view/general-table.component';
-import { AthleteDto } from 'src/app/core/entities/athlete/athlete';
-import { AthleteService } from 'src/app/core/entities/athlete/athlete.service';
+import { AbstractListComponent } from 'src/app/shared/abstract-list-component/abstract-list-component';
 import { RequestParticipationInput } from 'src/app/core/entities/graduation/graduation';
 import { GraduationService } from 'src/app/core/entities/graduation/graduation.service';
+import { AthleteService } from 'src/app/core/entities/athlete/athlete.service';
 import { PageableResponse } from 'src/app/core/entities/pageable/pageable';
-import { AbstractListComponent } from 'src/app/shared/abstract-list-component/abstract-list-component';
-import { EnumToastSeverity } from 'src/app/shared/utils/enum-toast-severity';
+import { AthleteDto } from 'src/app/core/entities/athlete/athlete';
+import { ToastService } from 'src/app/core/services/toast.service';
 
 @Component({
     selector: 'app-graduation-athletes-dialog',
@@ -44,16 +43,15 @@ export class GraduationAthletesDialogComponent extends AbstractListComponent<Ath
     }
 
     private _dialogVisible: boolean = true;
-    protected endpoint: Observable<PageableResponse<AthleteDto>>;
 
     constructor(
         private athleteService: AthleteService,
         private graduationService: GraduationService,
-        private messageService: MessageService,
+        private toastService: ToastService,
     ) { super(); }
 
-    ngOnInit() {
-        this.endpoint = this.athleteService.listAvailableAthletesToGraduation(this.graduationCode, this.pageable);
+
+    public ngOnInit() {
     }
 
     public toggleCheckBox(event: MouseEvent): void {
@@ -75,12 +73,12 @@ export class GraduationAthletesDialogComponent extends AbstractListComponent<Ath
         this.graduationService.requestParticipation(payload)
             .pipe(finalize(() => this.isLoading = false))
             .subscribe({
-                next: () => {
-                    this.messageService.add({
-                        severity: EnumToastSeverity.SUCCESS,
-                        summary: 'Sucesso!',
-                        detail: 'Atletas vinculados com sucesso ao exame de graduação.',
-                    });
+                next: (response) => {
+                    if (response != undefined && response.length > 0) {
+                        this.toastService.warning('Alguns atletas não puderam ser vinculados ao exame de graduação.');
+                    } else {
+                        this.toastService.success('Atletas vinculados com sucesso ao exame de graduação.');
+                    }
                     this.athletesAdded.emit();
                     this.dialogVisible = false;
                 }, error: (error) => {
@@ -88,4 +86,9 @@ export class GraduationAthletesDialogComponent extends AbstractListComponent<Ath
                 }
             });
     }
+
+    protected endpoint(): Observable<PageableResponse<AthleteDto>> {
+        return this.athleteService.listAvailableAthletesToGraduation(this.graduationCode, this.pageable);
+    }
+
 }

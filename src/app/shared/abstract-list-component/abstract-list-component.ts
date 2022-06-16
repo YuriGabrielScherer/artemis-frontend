@@ -8,13 +8,18 @@ export abstract class AbstractListComponent<Dto> {
 
     public records: Dto[] = [];
     public isLoading: boolean = true;
-    public pageable: PageableRequest = { page: 0, size: 10 };
+    private _pageable: PageableRequest = { page: 0, size: 10 };
+    public get pageable(): PageableRequest {
+        return this._pageable;
+    }
+    public set pageable(value: PageableRequest) {
+        this._pageable = value;
+    }
     public totalRecords: number;
     public firstDataLoaded: boolean = false;
     public hasError: boolean = false;
 
     public abstract columns: GeneralTableColumnsInput[];
-    protected abstract endpoint: Observable<PageableResponse<Dto>>;
     protected onSuccess?: Function;
     protected onError?: Function;
 
@@ -28,12 +33,19 @@ export abstract class AbstractListComponent<Dto> {
     public loadDataLazy(event: LazyLoadEvent): void {
         this.pageable.size = event.rows ?? 10;
         this.pageable.page = (event.first ?? 0) / (this.pageable.size ?? 10);
+        if (event.sortField && event.sortOrder) {
+            this.pageable.sortFields = [
+                { direction: event.sortOrder == 1 ? 'ASC' : 'DESC', property: event.sortField },
+            ];
+        }
         this.fetchData();
     }
 
+    protected abstract endpoint(): Observable<PageableResponse<Dto>>
+
     protected fetchData(): void {
         this.isLoading = true;
-        this.endpoint
+        this.endpoint()
             .pipe(finalize(() => this.isLoading = false))
             .subscribe({
                 next: (response) => {

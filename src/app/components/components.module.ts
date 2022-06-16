@@ -6,9 +6,11 @@ import { CrudComponentModule } from './crud-component/crud-component.module';
 import { SharedModule } from '../shared/shared.module';
 import { LoadingStateModule } from './loading-state/loading-state.module';
 import { EmptyStateModule } from './empty-state/empty-state.module';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   exports: [
+    CommonModule,
     GeneralTableModule,
     LibComponentsModule,
     CrudComponentModule,

@@ -27,7 +27,7 @@ export interface GraduationSaveInput extends BaseGraduation {
 }
 
 export interface RegisterProfessorsInput {
-    graduationsCode: number[];
+    graduationCode: number;
     professorsCode: number[];
 }
 

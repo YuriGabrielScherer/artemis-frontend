@@ -14,11 +14,9 @@ export class AthleteService extends AbstractService<AthleteDto, AthleteSaveInput
     }
 
     public listAvailableAthletesToGraduation(graduationCode: number, pageable: PageableRequest): Observable<PageableResponse<AthleteDto>> {
+        let params = new HttpParams().set('pageable', JSON.stringify(pageable));
         return this.http.get<PageableResponse<AthleteDto>>(`${super.getUrl()}/listAvailableAthletesToGraduation`, {
-            params: new HttpParams() //
-                .set('graduationCode', graduationCode)
-                .set('page', pageable.page)
-                .set('size', pageable.size),
+            params: params.set('graduationCode', graduationCode)
         }).pipe(take(1));
     }
 

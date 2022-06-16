@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { finalize, Observable } from 'rxjs';
 
@@ -14,7 +14,7 @@ import { EnumToastSeverity } from 'src/app/shared/utils/enum-toast-severity';
     selector: 'app-graduation-professors-dialog',
     templateUrl: 'graduation-professors-dialog.component.html'
 })
-export class GraduationProfessorsDialogComponent extends AbstractListComponent<ProfessorDto> implements OnInit {
+export class GraduationProfessorsDialogComponent extends AbstractListComponent<ProfessorDto> {
 
     @Input() graduationCode: number;
     @Output() associateProfessors: EventEmitter<void> = new EventEmitter();
@@ -26,8 +26,6 @@ export class GraduationProfessorsDialogComponent extends AbstractListComponent<P
         { field: 'person.name', header: 'Nome' },
         { field: 'person.association.name', header: 'Associação' },
     ];
-
-    protected endpoint: Observable<PageableResponse<ProfessorDto>>;
 
     public set showDialog(value: boolean) {
         this._showDialog = value;
@@ -46,9 +44,6 @@ export class GraduationProfessorsDialogComponent extends AbstractListComponent<P
         private messageService: MessageService,
     ) { super(); }
 
-    ngOnInit() {
-        this.endpoint = this.professorService.listAvailableProfessorsByGraduation(this.graduationCode, this.pageable);
-    }
 
     public toggleCheckBox(event: MouseEvent): void {
         event.stopPropagation();
@@ -60,7 +55,7 @@ export class GraduationProfessorsDialogComponent extends AbstractListComponent<P
 
     public onAssociateProfessor(): void {
         const professorsCode = this.professorsSelected.map(prof => prof.person.code);
-        this.graduationService.registerProfessors({ graduationsCode: [this.graduationCode!], professorsCode: professorsCode })
+        this.graduationService.registerProfessors({ graduationCode: this.graduationCode, professorsCode: professorsCode })
             .pipe(finalize(() => this.isLoading = false))
             .subscribe({
                 next: () => {
@@ -78,4 +73,9 @@ export class GraduationProfessorsDialogComponent extends AbstractListComponent<P
                 }
             });
     }
+
+    protected endpoint(): Observable<PageableResponse<ProfessorDto>> {
+        return this.professorService.listAvailableProfessorsByGraduation(this.graduationCode, this.pageable);
+    }
+
 }

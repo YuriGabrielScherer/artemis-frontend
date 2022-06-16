@@ -16,12 +16,11 @@ export class ProfessorService extends AbstractService<ProfessorDto, ProfessorSav
     }
 
     public listAvailableProfessorsByGraduation(graduationCode: number, pageable: PageableRequest): Observable<PageableResponse<ProfessorDto>> {
+        const params = new HttpParams().set('pageable', JSON.stringify(pageable));
         return this.http.get<PageableResponse<ProfessorDto>>(
             `${super.getUrl()}/listAvailableProfessorsToGraduation`, {
-            params: new HttpParams() //
-                .set('graduationCode', graduationCode)
-                .set('page', pageable.page)
-                .set('size', pageable.size),
+            params: params.set('graduationCode', graduationCode)
+
         })
             .pipe(take(1));
     }

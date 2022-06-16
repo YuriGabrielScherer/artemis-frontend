@@ -29,7 +29,6 @@ export class GraduationProfessorsComponent extends AbstractListComponent<Profess
         { field: 'person.association.name', header: 'Associação' },
     ];
 
-    protected endpoint: Observable<PageableResponse<ProfessorDto>>;
     protected override onSuccess?: Function | undefined;
     protected override onError?: Function | undefined;
 
@@ -42,9 +41,8 @@ export class GraduationProfessorsComponent extends AbstractListComponent<Profess
 
     ngOnInit(): void {
         this.canAssociate = ![EnumGraduationSituation.CANCELED, EnumGraduationSituation.FINISHED].includes(this.graduation.situation);
-        this.endpoint = this.graduationService.listProfessors(this.graduation.code, this.pageable);
     }
-    
+
     ngOnChanges(changes: SimpleChanges): void {
         const graduationChange = changes['graduation'];
         if (graduationChange) {
@@ -56,7 +54,7 @@ export class GraduationProfessorsComponent extends AbstractListComponent<Profess
     public onRemoveProfessor(professor: ProfessorDto): void {
         // TODO Modal Confirmation
         this.isLoading = true;
-        this.graduationService.removeProfessor({ graduationsCode: [this.graduation.code], professorsCode: [professor.person.code] })
+        this.graduationService.removeProfessor({ graduationCode: this.graduation.code, professorsCode: [professor.person.code] })
             .pipe(finalize(() => this.isLoading = false))
             .subscribe({
                 next: () => {
@@ -84,4 +82,10 @@ export class GraduationProfessorsComponent extends AbstractListComponent<Profess
         this.pageable = { page: 0, size: 10 };
         this.fetchData();
     }
+
+    protected endpoint(): Observable<PageableResponse<ProfessorDto>> {
+        return this.graduationService.listProfessors(this.graduation.code, this.pageable);
+    }
+
 }
+

@@ -9,6 +9,7 @@ import { AbstractService } from 'src/app/core/entities/abstract.service';
 })
 export class CrudComponent<Dto> implements OnInit {
 
+  @Input() showEditButton: boolean = true;
   @Input() showDetailButton: boolean = false;
   @Input() defaultSortField: string = 'code';
   @Input() dataKey: string;
@@ -56,12 +57,9 @@ export class CrudComponent<Dto> implements OnInit {
     this.selectedData.forEach((data: any) => {
       this.service.delete(this.getDatakeyProperty(data)).subscribe({
         next: () => {
-          // TODO Quando back estiver pronto ajustar isso aqui.
-          // Excluir mais de um por vez
-          console.log('Deleted!');
         },
         error: (error) => {
-          console.log('Erro!', error);
+          console.log('Something here', error);
         }
       });
     });

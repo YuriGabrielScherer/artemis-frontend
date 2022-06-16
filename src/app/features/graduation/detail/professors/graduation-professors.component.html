@@ -14,7 +14,7 @@
         </button>
 
         <p-table [columns]="columns" [value]="records" [paginator]="true" [rows]="pageable.size" dataKey="person.code"
-            [totalRecords]="totalRecords" sortField="code" [lazy]="true" (onLazyLoad)="loadDataLazy($event)"
+            [totalRecords]="totalRecords" sortField="person.code" [lazy]="true" (onLazyLoad)="loadDataLazy($event)"
             responsiveLayout="scroll">
             <ng-template pTemplate="header" let-columns>
                 <tr>
