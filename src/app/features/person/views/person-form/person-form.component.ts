@@ -83,7 +83,7 @@ export class PersonFormComponent implements OnInit {
         finalize(() => this.isLoading = false)
       )
       .subscribe(({
-        next: (response) => {
+        next: () => {
           this.messageService.add({
             severity: EnumToastSeverity.SUCCESS,
             summary: 'Sucesso!',

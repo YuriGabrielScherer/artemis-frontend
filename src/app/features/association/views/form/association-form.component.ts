@@ -79,6 +79,9 @@ export class AssociationFormComponent implements OnInit {
     }
 
     const payload: AssociationSaveInput = this.form.value;
+    if (this.association) {
+      payload.code = this.association.code;
+    }
 
     this.isLoading = true;
     this.associationService.save(payload)

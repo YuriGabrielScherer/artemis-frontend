@@ -1,0 +1,33 @@
+<div class="grid">
+
+    <div class="col">
+        <app-dashboard-count-card title="Usuários" iconClass="pi pi-users"
+            [endpoint]="personService.find({page:999, size: 1})">
+        </app-dashboard-count-card>
+    </div>
+    <div class="col">
+        <app-dashboard-count-card title="Atletas" iconClass="pi pi-bolt"
+            [endpoint]="athleteService.find({page:999, size: 1})">
+        </app-dashboard-count-card>
+    </div>
+    <div class="col">
+        <app-dashboard-count-card title="Professores" iconClass="pi pi-id-card"
+            [endpoint]="professorService.find({page:999, size: 1})">
+        </app-dashboard-count-card>
+    </div>
+    <div class="col">
+        <app-dashboard-count-card title="Graduação" iconClass="pi pi-calendar"
+            [endpoint]="graduationService.countFutureGraduation()">
+        </app-dashboard-count-card>
+    </div>
+
+</div>
+
+<div class="grid">
+    <div class="col">
+        <app-dashboard-graduation></app-dashboard-graduation>
+    </div>
+    <div class="col">
+        <app-dashboard-associations></app-dashboard-associations>
+    </div>
+</div>

@@ -1,12 +1,21 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { DashboardComponent } from './view/dashboard/dashboard.component';
 import { MainComponent } from './view/main.component';
 
 const routes: Routes = [
   {
     path: '',
+    redirectTo: 'dashboard',
+  },
+  {
+    path: '',
     component: MainComponent,
     children: [
+      {
+        path: 'dashboard',
+        component: DashboardComponent,
+      },
       {
         path: 'association',
         loadChildren: () => import('../association/association.module').then(m => m.AssociationModule),
@@ -32,7 +41,8 @@ const routes: Routes = [
         loadChildren: () => import('../belt/belt.module').then(m => m.BeltModule),
       },
     ]
-  }
+  },
+
 ];
 
 @NgModule({

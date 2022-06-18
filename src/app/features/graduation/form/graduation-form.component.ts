@@ -44,10 +44,14 @@ export class GraduationFormComponent implements OnInit {
       // TODO Mark All fields.
       return;
     }
+    this.isLoading = true;
 
     const payload: GraduationSaveInput = this.form.value;
 
-    this.isLoading = true;
+    if (this.graduation) {
+      payload.code = this.graduation.code;
+    }
+
     this.graduationService.save(payload)
       .pipe(finalize(() => this.isLoading = false))
       .subscribe({

@@ -1,0 +1,15 @@
+.customHeader {
+    padding: 20px;
+    padding-bottom: 0;
+    margin-bottom: -20px; 
+    font-weight: 500;
+}
+
+.spanInfo {
+    font-weight: 700;
+    font-size: 22px;
+}
+
+.divInfo {
+    text-align: center;
+}

@@ -1,0 +1,43 @@
+<p-card header="{{ graduation?.title ?? 'Exame de Graduação' }}" subheader="Próximo exame de graduação">
+    <div *loadingState="isLoading" class="grid divInfo">
+        <div class="col ">
+            <ng-container *ngIf="hasError == false; else error">
+                <ng-container *ngIf="graduation == undefined && dataLoaded == true; else showData">
+                    Nenhum exame de graduação registrado!
+                </ng-container>
+                <ng-template #showData>
+
+                    <div class="grid">
+                        <div class="col">
+                            <p *ngIf="graduation!.description">
+                                <span class="titleField">Descrição: </span>
+                                {{ graduation!.description }}
+                            </p>
+                            <p *ngIf="graduation!.place">
+                                <span class="titleField">Local: </span>
+                                {{ graduation!.place }}
+                            </p>
+                            <p *ngIf="graduation!.date">
+                                <span class="titleField">Data: </span>
+                                {{ graduation!.date | date:'dd/MM/yyyy' }}
+                            </p>
+                        </div>
+                        <div class="col">
+                            <p *ngIf="graduation!.situation">
+                                <span class="titleField" style="margin-right: 6px;">Situação:</span>
+                                <span [appSituationGraduation]="graduation!.situation"></span>
+                            </p>
+                        </div>
+                    </div>
+                </ng-template>
+            </ng-container>
+
+            <ng-template #error>
+                <app-empty-state title="Erro ao processar a requisição" icon="pi pi-inbox" [showFirstAction]="true"
+                    firstActionLabel="Tentar novamente" (firstAction)="onRetry()">
+                </app-empty-state>
+            </ng-template>
+
+        </div>
+    </div>
+</p-card>

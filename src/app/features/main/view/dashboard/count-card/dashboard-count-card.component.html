@@ -1,0 +1,18 @@
+<p-card *loadingState="isLoading" styleClass="customCardBorderDashboard">
+    <ng-template pTemplate="header">
+        <div class="customHeader">
+            <i [class]=""></i>
+            {{ title }}
+        </div>
+    </ng-template>
+
+    <div class="grid divInfo">
+        <div class="col">
+            <span class="spanInfo">
+                {{ value ?? 0 }}
+            </span>
+        </div>
+
+    </div>
+
+</p-card>

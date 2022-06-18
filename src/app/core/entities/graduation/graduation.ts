@@ -66,3 +66,8 @@ export interface SetGraduationGradesInput {
     graduationCode: number;
     grades: SetGraduationGradeProfessorAthlete[];
 }
+
+export interface GraduationFilter {
+    dateBegin?: Date;
+    dateEnd?: Date;
+}

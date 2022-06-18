@@ -14,3 +14,8 @@ export interface AssociationSaveInput extends BaseAssociation {
 export interface AssociationDto extends BaseAssociation {
     manager: PersonDto;
 }
+
+export interface TopAssociation {
+    name: string;
+    count: number;
+}

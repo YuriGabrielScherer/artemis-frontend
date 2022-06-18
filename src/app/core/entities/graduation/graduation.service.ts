@@ -1,11 +1,12 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, ObservableLike, take } from 'rxjs';
+import { catchError, map, Observable, ObservableLike, take } from 'rxjs';
 
 import { AbstractService } from '../abstract.service';
 
 import {
     GraduationDto,
+    GraduationFilter,
     GraduationSaveInput,
     ListGraduationGradesOutput,
     RegisterProfessorsInput,
@@ -22,7 +23,10 @@ import { AthleteDto } from '../athlete/athlete';
 
 @Injectable({ providedIn: 'root' })
 export class GraduationService extends AbstractService<GraduationDto, GraduationSaveInput> {
-    constructor(protected http: HttpClient, protected messageService: MessageService) {
+    constructor(
+        protected http: HttpClient,
+        protected messageService: MessageService,
+    ) {
         super(http, messageService, 'graduation')
     }
 
@@ -117,6 +121,28 @@ export class GraduationService extends AbstractService<GraduationDto, Graduation
             take(1),
             catchError(this.handleError.bind(this))
         );
+    }
+
+    public countFutureGraduation(): Observable<PageableResponse<any>> {
+        return this.http.get<number>(`${super.getUrl()}/countFutureGraduation`)
+            .pipe(
+                take(1),
+                catchError(this.handleError.bind(this)),
+                map(response => ({ records: [], totalRecords: response }))
+            );
+    }
+
+    public findNextGraduation(): Observable<GraduationDto> {
+        const pageable: PageableRequest = {
+            page: 0, size: 1, sortFields: [{ property: 'date', direction: 'ASC' }]
+        };
+
+        const filter: GraduationFilter = {
+            dateBegin: new Date(),
+        };
+
+        return this.find(pageable, filter)
+            .pipe(map(response => response.records[0]));
     }
 
 }

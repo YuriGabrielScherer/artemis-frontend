@@ -22,7 +22,7 @@ export class MenuComponent implements OnInit {
           {
             label: 'Início',
             icon: 'pi pi-home',
-            routerLink: ['/'],
+            routerLink: '/dashboard',
           },
           {
             label: 'Perfil',
@@ -36,33 +36,34 @@ export class MenuComponent implements OnInit {
           {
             label: 'Associações',
             icon: PrimeIcons.TH_LARGE,
-            routerLink: ['/association'],
+            routerLink: '/association',
+
           },
           {
             label: 'Usuários',
             icon: PrimeIcons.USERS,
-            routerLink: ['/person'],
+            routerLink: '/person',
 
           },
           {
             label: 'Atletas',
             icon: PrimeIcons.BOLT,
-            routerLink: ['/athlete'],
+            routerLink: '/athlete',
           },
           {
             label: 'Professores',
             icon: PrimeIcons.ID_CARD,
-            routerLink: ['/professor'],
+            routerLink: '/professor',
           },
           {
             label: 'Exames de Graduação',
             icon: PrimeIcons.CALENDAR,
-            routerLink: ['/graduation'],
+            routerLink: '/graduation',
           },
           {
             label: 'Faixas',
             icon: PrimeIcons.CODE,
-            routerLink: ['/belt'],
+            routerLink: '/belt',
           },
         ]
       },

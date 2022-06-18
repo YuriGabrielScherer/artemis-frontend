@@ -27,3 +27,11 @@ body {
 .titleField {
     font-weight: 700;
 }
+
+.customCardBorderDashboard {
+    border-left: 4px solid #3B82F6;
+}
+
+.customCardBorderDashboard .p-card-body {
+    padding-bottom: 0!important;
+}
